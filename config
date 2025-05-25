@@ -1,0 +1,217 @@
+# Mod1 = Alt
+# Mod4 = Super
+set $mod Mod4
+set $mod2 Mod1
+
+font pango:monospace 11
+
+exec --no-startup-id dex --autostart --environment sway
+exec_always --no-startup-id $HOME/.config/i3blocks/battery_init.sh
+
+
+# exec_always --no-startup-id swaybg -i $HOME/wallpapers/pixel.jpg
+exec_always --no-startup-id swaybg -i $HOME/wallpapers/deer.png
+exec_always --no-startup-id $HOME/.config/sway/scripts/reset_volume_brightness
+
+
+
+exec_always swaync
+
+
+# exec swayidle -w timeout 1000 'swaymsg "output * power off"' resume 'swaymsg "output * power on"'
+
+
+exec --no-startup-id fcitx5 -D 
+
+
+bindsym $mod+BackSpace exec --no-startup-id swaylock --color 000000 
+bindsym $mod+Grave exec --no-startup-id ~/.config/i3/dmenu_scripts/power_options
+bindsym $mod+Control+s exec grim -g "$(slurp)" - | wl-copy
+
+
+
+# Use pactl to adjust volume in PulseAudio.
+bindsym XF86AudioRaiseVolume exec --no-startup-id $HOME/.config/sway/scripts/volume increase
+bindsym XF86AudioLowerVolume exec --no-startup-id $HOME/.config/sway/scripts/volume decrease  
+bindsym XF86AudioMute exec --no-startup-id $HOME/.config/sway/scripts/toggle_mute
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+bindsym Print exec --no-startup-id gnome-screenshot -i
+
+# bindsym XF86MonBrightnessUp exec --no-startup-id  $HOME/.config/sway/scripts/brightness_monitor increase
+# bindsym XF86MonBrightnessDown exec --no-startup-id $HOME/.config/sway/scripts/brightness_monitor decrease
+
+bindsym XF86MonBrightnessUp exec --no-startup-id  $HOME/.config/sway/scripts/brightness_laptop increase
+bindsym XF86MonBrightnessDown exec --no-startup-id $HOME/.config/sway/scripts/brightness_laptop decrease
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+bindsym $mod+Return exec wezterm
+bindsym $mod+o exec firefox
+
+
+# kill focused window
+bindsym $mod+q kill
+bindsym $mod+b exec --no-startup-id $HOME/.config/i3/dmenu_scripts/bluetooth
+
+bindsym $mod+space exec --no-startup-id $HOME/.config/rofi/scripts/entry_launch.bash
+bindsym $mod2+space exec swaync-client -rs  && swaync-client -t
+
+
+
+
+bindsym $mod+Tab         exec $HOME/.config/i3/i3_scripts/cycle_tabbed_windows right
+bindsym $mod+Shift+Tab   exec $HOME/.config/i3/i3_scripts/cycle_tabbed_windows left
+ 
+
+bindsym $mod+j          focus up
+bindsym $mod+k          focus left
+bindsym $mod+l          focus right
+bindsym $mod+semicolon  focus down
+
+# move focused window
+bindsym $mod+Shift+j         move up 
+bindsym $mod+Shift+k         move left
+bindsym $mod+Shift+l         move right
+bindsym $mod+Shift+semicolon move down
+
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+slash fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+slash floating toggle
+
+# focus the parent container
+bindsym $mod+p focus parent
+
+# focus the child container
+bindsym $mod+c focus child
+
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "0"
+
+set $left HDMI-A-1
+set $right DP-3
+
+output $left pos 0 0 
+output $right pos 1920 0
+
+
+workspace $ws1 output $left
+workspace $ws2 output $left
+workspace $ws3 output $left
+workspace $ws4 output $left
+workspace $ws5 output $left
+
+workspace $ws6 output $right
+workspace $ws7 output $right
+workspace $ws8 output $right
+workspace $ws9 output $right
+workspace $ws10 output $right
+
+
+# switch to workspace
+bindsym $mod+a workspace $ws1
+bindsym $mod+s workspace $ws2
+bindsym $mod+d workspace $ws3
+bindsym $mod+f workspace $ws4
+bindsym $mod+g workspace $ws5
+
+bindsym $mod+n workspace $ws6
+bindsym $mod+m workspace $ws7
+bindsym $mod+comma workspace $ws8
+bindsym $mod+period workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+a move container to workspace $ws1
+bindsym $mod+Shift+s move container to workspace $ws2
+bindsym $mod+Shift+d move container to workspace $ws3
+bindsym $mod+Shift+f move container to workspace $ws4
+bindsym $mod+Shift+g move container to workspace $ws5
+
+bindsym $mod+Shift+n move container to workspace $ws6
+bindsym $mod+Shift+m move container to workspace $ws7
+bindsym $mod+Shift+comma move container to workspace $ws8
+bindsym $mod+Shift+period move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+
+default_border pixel 2
+
+# reload the configuration file
+bindsym $mod+Shift+r reload
+
+# resize window (you can also use the mouse for that)
+set $to_move 3
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym k resize grow width $to_move px or $to_move ppt
+        bindsym l resize shrink width $to_move px or $to_move ppt
+
+        bindsym j resize grow height $to_move px or $to_move ppt
+        bindsym semicolon resize shrink height $to_move px or $to_move ppt
+
+
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize grow width $to_move px or $to_move ppt
+        bindsym Right resize shrink width $to_move px or $to_move ppt
+
+        bindsym Up resize grow height $to_move px or $to_move ppt
+        bindsym Down resize shrink height $to_move px or $to_move ppt
+
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym r exec i3-msg "resize set width 960px height 540px"
+
+        bindsym e layout toggle split
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+
+input "2362:597:STAR0001:00_093A:0255_Touchpad" {
+  tap enabled
+  middle_emulation enabled
+  drag disabled
+  natural_scroll disabled
+  pointer_accel 0
+  dwt enabled
+}
+
+bar {
+  swaybar_command waybar
+}
+
+bindsym $mod+r mode "resize"
